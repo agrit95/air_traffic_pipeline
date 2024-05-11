@@ -15,7 +15,7 @@ def upload_file(file_name, bucket, object_name=None):
 
     # If S3 object_name was not specified, use file_name
     if object_name is None:
-        object_name = os.path.basename(file_name)
+        object_name = file_name
 
     # Upload the file
     s3_client = boto3.client('s3')
@@ -25,3 +25,15 @@ def upload_file(file_name, bucket, object_name=None):
         logging.error(e)
         return False
     return True
+
+
+bucket_name = 'air-traffic-data'
+
+raw_files_dir = os.path.join(os.path.dirname(__file__), '../raw_data')
+file_names = os.listdir(raw_files_dir)
+file_full_path = []
+for file in file_names:
+    file_full_path.append(os.path.join(raw_files_dir, file))
+
+for file_path, file_name in zip(file_full_path, file_names):
+    upload_file(file_path, bucket_name, file_name)
