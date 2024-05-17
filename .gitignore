@@ -1,3 +1,7 @@
 /venv
+
 *.key
+
 /config/*.json
+
+/config/rds_config.json
