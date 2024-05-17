@@ -1,4 +1,4 @@
-/config/rds_config.json
+/config/*.json
 
 /venv
 
