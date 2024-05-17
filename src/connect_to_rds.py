@@ -4,13 +4,12 @@ import boto3
 import os
 import json
 
-config_path = os.path.join(os.path.dirname(__file__),'../config')
-rds_config = os.path.join(config_path,'rds_config.json')
+config_path = os.path.join(os.path.dirname(__file__), '../config')
+rds_config = os.path.join(config_path, 'rds_config.json')
 
 
 with open(rds_config) as file:
-  config = json.load(file)
-
+    config = json.load(file)
 
 
 try:
@@ -21,5 +20,3 @@ try:
     print(query_results)
 except Exception as e:
     print("Database connection failed due to {}".format(e))
-
-
