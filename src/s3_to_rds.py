@@ -3,6 +3,7 @@ import boto3
 import os
 import json
 import psycopg2
+from sqlalchemy import create_engine
 
 config_path = os.path.join(os.path.dirname(__file__), '../config')
 rds_config = os.path.join(config_path, 'rds_config.json')
@@ -31,6 +32,7 @@ for file in files_list:
     dataframes_list.append(temp_df)
 
 df1, df2, df3 = dataframes_list
+
 
 table1 = 'airlinewise_monthly_international'
 table2 = 'citypairwise_quarterly_international'
@@ -81,10 +83,11 @@ table3 = 'countrywise_quarterly_international'
 except Exception as e:
     print(f'Database connection failed due to {e}') """
 
+# Creating SQLAlchemy engine for df.to_sql to work
+engine = create_engine(
+    'postgresql://{user}:{password}@{host}:{port}/{database}'.format(**config))
+
 # Moving data from csv file to tables in RDS
-
-# print(df1.to_sql(table1, conn, if_exists='replace', index=False),
-#       df2.to_sql(table2, conn, if_exists='replace', index=False),
-#       df3.to_sql(table3, conn, if_exists='replace', index=False))
-
-df1.to_sql(table1, conn, if_exists='replace', index=False)
+print(df1.to_sql(table1, engine, if_exists='replace', index=False),
+      df2.to_sql(table2, engine, if_exists='replace', index=False),
+      df3.to_sql(table3, engine, if_exists='replace', index=False))
